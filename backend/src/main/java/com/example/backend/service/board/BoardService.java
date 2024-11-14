@@ -39,4 +39,10 @@ public class BoardService {
 
         return title && content;
     }
+
+    // 게시물 삭제
+    public boolean remove(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
+    }
 }

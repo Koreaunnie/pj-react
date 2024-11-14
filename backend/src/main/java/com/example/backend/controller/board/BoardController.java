@@ -50,4 +50,17 @@ public class BoardController {
         return service.get(id);
     }
 
+    // 게시물 삭제
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
+        if (service.remove(id)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success"
+                            , "text", id + "번 게시글이 삭제되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", Map.of("type", "error"
+                            , "text", "게시글 삭제 중 문제가 발생하였습니다.")));
+        }
+    }
 }
