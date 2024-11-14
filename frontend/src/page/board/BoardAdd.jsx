@@ -4,6 +4,7 @@ import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -20,7 +21,15 @@ export function BoardAdd() {
         writer,
       })
       .then((res) => res.data)
-      .then((data) => navigate(`/view/${data.id}`));
+      .then((data) => {
+        const message = data.message;
+
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+        navigate(`/view/${data.data.id}`);
+      });
   };
   return (
     <Box>

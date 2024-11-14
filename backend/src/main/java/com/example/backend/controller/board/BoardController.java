@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,9 +17,8 @@ public class BoardController {
 
     // 게시물 작성
     @PostMapping("add")
-    public Board add(@RequestBody Board board) {
-        service.add(board);
-        return board;
+    public Map<String, Object> add(@RequestBody Board board) {
+        return service.add(board);
     }
 
     // 게시물 목록
