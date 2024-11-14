@@ -24,4 +24,9 @@ public class BoardService {
     public List<Board> list() {
         return mapper.selectAll();
     }
+
+    // 게시물 상세 보기
+    public Board get(int id) {
+        return mapper.selectById(id);
+    }
 }

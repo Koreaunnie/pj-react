@@ -26,4 +26,10 @@ public class BoardController {
         return service.list();
     }
 
+    // 게시물 상세 보기
+    @GetMapping("view/{id}")
+    public Board view(@PathVariable int id) {
+        return service.get(id);
+    }
+
 }
