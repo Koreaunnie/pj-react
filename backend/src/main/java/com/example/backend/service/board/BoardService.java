@@ -31,4 +31,12 @@ public class BoardService {
     public Board get(int id) {
         return mapper.selectById(id);
     }
+
+    // 게시물 작성 시 제목, 내용 공백 불가
+    public boolean validate(Board board) {
+        boolean title = board.getTitle().trim().length() > 0;
+        boolean content = board.getContent().trim().length() > 0;
+
+        return title && content;
+    }
 }
