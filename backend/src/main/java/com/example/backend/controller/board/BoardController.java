@@ -3,10 +3,9 @@ package com.example.backend.controller.board;
 import com.example.backend.dto.board.Board;
 import com.example.backend.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,4 +19,11 @@ public class BoardController {
     public void add(@RequestBody Board board) {
         service.add(board);
     }
+
+    // 게시물 목록
+    @GetMapping("list")
+    public List<Board> list() {
+        return service.list();
+    }
+
 }
