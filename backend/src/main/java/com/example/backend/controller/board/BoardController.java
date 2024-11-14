@@ -16,8 +16,9 @@ public class BoardController {
 
     // 게시물 작성
     @PostMapping("add")
-    public void add(@RequestBody Board board) {
+    public Board add(@RequestBody Board board) {
         service.add(board);
+        return board;
     }
 
     // 게시물 목록
