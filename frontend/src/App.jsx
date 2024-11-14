@@ -1,8 +1,9 @@
-import {createBrowserRouter, RouterProvider,} from "react-router-dom";
-import {BoardAdd} from "./page/board/BoardAdd.jsx";
-import {RootLayout} from "./page/root/RootLayout.jsx";
-import {BoardList} from "./page/board/BoardList.jsx";
-import {BoardView} from "./page/board/BoardView.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BoardAdd } from "./page/board/BoardAdd.jsx";
+import { RootLayout } from "./page/root/RootLayout.jsx";
+import { BoardList } from "./page/board/BoardList.jsx";
+import { BoardView } from "./page/board/BoardView.jsx";
+import { BoardEdit } from "./page/board/BoardEdit.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "view/:id",
         element: <BoardView />,
+      },
+      {
+        path: "edit/:id",
+        element: <BoardEdit />,
       },
     ],
   },
