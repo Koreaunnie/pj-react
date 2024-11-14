@@ -39,6 +39,10 @@ export function BoardAdd() {
           description: message.text,
           type: message.type,
         });
+      })
+      .finally(() => {
+        // 성공 / 실패 상관 없이 실행
+        setProgress(false);
       });
   };
 

@@ -27,7 +27,7 @@ public class BoardController {
         } else {
             return ResponseEntity.internalServerError()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "게시물 등록이 실패하였습니다.")));
+                            "text", "게시물 등록에 실패하였습니다.")));
         }
     }
 
