@@ -19,18 +19,19 @@ export function MemberSignup() {
       .post("/api/member/signup", { id, password, description })
       .then((res) => {
         console.log("성공");
-        const message = res.data.message;
 
+        const message = res.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
+
         navigate("/");
       })
       .catch((e) => {
         console.log("실패");
-        const message = e.response.data.message;
 
+        const message = e.response.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
@@ -65,7 +66,7 @@ export function MemberSignup() {
 
   if (idCheck) {
     if (password === passwordCheck) {
-      disabled = !idCheck;
+      disabled = false;
     }
   }
 
@@ -73,9 +74,10 @@ export function MemberSignup() {
     <Box>
       <h3>회원가입</h3>
       <Stack gap={5}>
-        <Field label={"아이디"}>
+        <Field label="아이디" helperText="아이디 중복확인을 해주세요." required>
           <Group attached>
             <Input
+              placeholder="20자 이내"
               value={id}
               onChange={(e) => {
                 setIdCheck(false);
@@ -88,22 +90,21 @@ export function MemberSignup() {
           </Group>
         </Field>
 
-        <Field label={"비밀번호"}>
+        <Field label="비밀번호" required>
           <Input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
 
-        <Field label={"비밀번호 확인"}>
+        <Field label="비밀번호 확인" required>
           <Input
             value={passwordCheck}
             onChange={(e) => setPasswordCheck(e.target.value)}
-            invalid
           />
         </Field>
 
-        <Field label={"자기소개"}>
+        <Field label="자기소개">
           <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
