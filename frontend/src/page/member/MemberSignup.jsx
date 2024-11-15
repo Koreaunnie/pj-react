@@ -1,4 +1,4 @@
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Group, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useState } from "react";
 import axios from "axios";
@@ -16,6 +16,7 @@ export function MemberSignup() {
     axios
       .post("/api/member/signup", { id, password, description })
       .then((res) => {
+        console.log("성공");
         const message = res.data.message;
 
         toaster.create({
@@ -25,6 +26,7 @@ export function MemberSignup() {
         navigate("/");
       })
       .catch((e) => {
+        console.log("실패");
         const message = e.response.data.message;
 
         toaster.create({
@@ -37,12 +39,34 @@ export function MemberSignup() {
       });
   }
 
+  const handleIdCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          id: id,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
+  };
+
   return (
     <Box>
       <h3>회원가입</h3>
       <Stack gap={5}>
         <Field label={"아이디"}>
-          <Input value={id} onChange={(e) => setId(e.target.value)} />
+          <Group attached>
+            <Input value={id} onChange={(e) => setId(e.target.value)} />
+            <Button onClick={handleIdCheckClick} variant={"outline"}>
+              중복확인
+            </Button>
+          </Group>
         </Field>
 
         <Field label={"비밀번호"}>
