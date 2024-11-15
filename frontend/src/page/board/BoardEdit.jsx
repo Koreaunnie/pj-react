@@ -17,7 +17,7 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardEdit() {
-  const [board, setBoard] = useState(null);
+  const [board, setBoard] = useState({ title: "", content: "" });
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
 
