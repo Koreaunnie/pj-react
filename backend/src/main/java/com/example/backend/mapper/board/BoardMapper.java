@@ -43,4 +43,10 @@ public interface BoardMapper {
             WHERE id=#{id}
             """)
     int update(Board board);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM board
+            """)
+    int countAll();
 }

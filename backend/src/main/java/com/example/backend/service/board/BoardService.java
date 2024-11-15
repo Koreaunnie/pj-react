@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -23,8 +23,9 @@ public class BoardService {
     }
 
     // 게시물 목록
-    public List<Board> list(Integer page) {
-        return mapper.selectByPage((page - 1) * 10);
+    public Map<String, Object> list(Integer page) {
+        return Map.of("list", mapper.selectByPage((page - 1) * 10),
+                "count", mapper.countAll());
     }
 
     // 게시물 상세 보기

@@ -11,8 +11,9 @@ import {
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
-  const navigate = useNavigate();
+  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,7 +23,10 @@ export function BoardList() {
         signal: controller.signal,
       })
       .then((res) => res.data)
-      .then((data) => setBoardList(data));
+      .then((data) => {
+        setBoardList(data.list);
+        setCount(data.count);
+      });
 
     return () => {
       controller.abort();
@@ -72,7 +76,7 @@ export function BoardList() {
 
       <PaginationRoot
         onPageChange={handlePageChange}
-        count={1500}
+        count={count}
         pageSize={10}
         page={page}
       >
