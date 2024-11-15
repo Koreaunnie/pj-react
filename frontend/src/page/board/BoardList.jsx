@@ -65,6 +65,7 @@ export function BoardList() {
       // 검색
       nextSearchParam.set("st", search.type);
       nextSearchParam.set("sk", search.keyword);
+      nextSearchParam.set("page", 1);
     } else {
       // 검색 안함
       nextSearchParam.delete("st");
