@@ -46,7 +46,7 @@ public class BoardController {
         System.out.println(searchType);
         System.out.println(keyword);
 
-        return service.list(page);
+        return service.list(page, searchType, keyword);
     }
 
     // 게시물 상세 보기

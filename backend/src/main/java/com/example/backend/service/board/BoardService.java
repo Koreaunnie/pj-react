@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,9 +24,18 @@ public class BoardService {
     }
 
     // 게시물 목록
-    public Map<String, Object> list(Integer page) {
-        return Map.of("list", mapper.selectByPage((page - 1) * 10),
-                "count", mapper.countAll());
+    public Map<String, Object> list(Integer page, String searchType, String keyword) {
+
+        // sql 의 LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+
+        // 조회되는 게시물
+        List<Board> list = mapper.selectByPage(offset, searchType, keyword);
+        Integer count = mapper.countAll();
+
+        // 전체 게시물
+        return Map.of("list", list,
+                "count", count);
     }
 
     // 게시물 상세 보기

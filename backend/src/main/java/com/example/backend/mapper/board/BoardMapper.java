@@ -17,12 +17,23 @@ public interface BoardMapper {
     int insert(Board board);
 
     @Select("""
-            SELECT id, title, writer, inserted
-            FROM board
-            ORDER BY id DESC
-            LIMIT #{offset}, 10;
+            <script>
+                SELECT id, title, writer, inserted
+                FROM board
+                WHERE
+                    <trim prefixOverrides="OR">
+                        <if test="searchType == 'all' or searchType == 'title'">
+                            title LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="searchType == 'all' or searchType == 'content'">
+                            OR content LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                    </trim>
+                ORDER BY id DESC
+                LIMIT #{offset}, 10;
+            </script>
             """)
-    List<Board> selectByPage(Integer offset);
+    List<Board> selectByPage(Integer offset, String searchType, String keyword);
 
     @Select("""
             SELECT *
