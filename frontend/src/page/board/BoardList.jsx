@@ -121,14 +121,16 @@ export function BoardList() {
       )}
 
       <HStack>
-        <select
-          value={search.type}
-          onChange={(e) => setSearch({ ...search, type: e.target.value })}
-        >
-          <option value="all">전체</option>
-          <option value="title">제목</option>
-          <option value="content">본문</option>
-        </select>
+        <Box>
+          <select
+            value={search.type}
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="content">본문</option>
+          </select>
+        </Box>
         <Input
           value={search.keyword}
           onChange={(e) =>
