@@ -17,7 +17,7 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardEdit() {
-  const [board, setBoard] = useState({ title: "", content: "" });
+  const [board, setBoard] = useState(null);
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
 
@@ -54,14 +54,15 @@ export function BoardEdit() {
       });
   };
 
+  // board가 null일 때 (첫 렌더)
+  if (board === null) {
+    return <Spinner />;
+  }
+
   // 제목이나 본문이 비어있는지 확인
   const disabled = !(
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
-
-  if (board === null) {
-    return <Spinner />;
-  }
 
   return (
     <Box>
