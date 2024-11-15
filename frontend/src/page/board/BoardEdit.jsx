@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -14,11 +14,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardEdit() {
-  const { id } = useParams();
   const [board, setBoard] = useState(null);
-  const [progress, setProgress] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
+  const [progress, setProgress] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
+
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
@@ -27,10 +31,29 @@ export function BoardEdit() {
   const handleSaveClick = () => {
     setProgress(true);
 
-    axios.put("/api/board/update", board).finally(() => {
-      setProgress(false);
-    });
+    axios
+      .put("/api/board/update", board)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate(`/view/${board.id}`);
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(() => {
+        setProgress(false);
+        setDialogOpen(false);
+      });
   };
+
   if (board === null) {
     return <Spinner />;
   }
@@ -53,7 +76,10 @@ export function BoardEdit() {
           />
         </Field>
         <Box>
-          <DialogRoot>
+          <DialogRoot
+            open={dialogOpen}
+            onOpenChange={(e) => setDialogOpen(e.open)}
+          >
             <DialogTrigger asChild>
               <Button>저장</Button>
             </DialogTrigger>

@@ -66,7 +66,15 @@ public class BoardController {
 
     // 게시물 수정
     @PutMapping("update")
-    public void update(@RequestBody Board board) {
-        service.update(board);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board) {
+        if (service.update(board)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("massage", Map.of("type", "success",
+                            "text", board.getId() + "번 게시글이 수정되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("massage", Map.of("type", "success",
+                            "text", board.getId() + "번 게시글이 수정 중 문제가 발생하였습니다.")));
+        }
     }
 }
