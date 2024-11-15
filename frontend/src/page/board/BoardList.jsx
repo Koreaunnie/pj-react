@@ -1,4 +1,4 @@
-import { Box, HStack, Table } from "@chakra-ui/react";
+import { Box, HStack, Input, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -8,10 +8,16 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import {
+  NativeSelectField,
+  NativeSelectRoot,
+} from "../../components/ui/native-select.jsx";
+import { Button } from "../../components/ui/button.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const [count, setCount] = useState(0);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -48,6 +54,22 @@ export function BoardList() {
     setSearchParams(nextSearchParams);
   }
 
+  // 카테고리 검색
+  function handleSearchClick(e) {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      nextSearchParam.set("st", search.type);
+      nextSearchParam.set("sk", search.keyword);
+    } else {
+      // 검색 안함
+      nextSearchParam.delete("st");
+      nextSearchParam.delete("sk");
+    }
+    setSearchParams(nextSearchParam);
+  }
+
   return (
     <Box>
       <h3>게시물 목록</h3>
@@ -73,6 +95,27 @@ export function BoardList() {
           ))}
         </Table.Body>
       </Table.Root>
+
+      <HStack>
+        <NativeSelectRoot
+          onChange={(e) => setSearch({ ...search, type: e.target.value })}
+        >
+          <NativeSelectField
+            items={[
+              { label: "전체", value: "all" },
+              { label: "제목", value: "title" },
+              { label: "본문", value: "content" },
+            ]}
+          />
+        </NativeSelectRoot>
+        <Input
+          value={search.keyword}
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
+        />
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
 
       <PaginationRoot
         onPageChange={handlePageChange}
