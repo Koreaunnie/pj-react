@@ -46,6 +46,7 @@ export function BoardAdd() {
       });
   };
 
+  // 제목이나 본문이 비어있는지 확인
   const disabled = !(title.trim().length > 0 && content.trim().length > 0);
 
   return (

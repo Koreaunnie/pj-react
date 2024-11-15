@@ -54,6 +54,11 @@ export function BoardEdit() {
       });
   };
 
+  // 제목이나 본문이 비어있는지 확인
+  const disabled = !(
+    board.title.trim().length > 0 && board.content.trim().length > 0
+  );
+
   if (board === null) {
     return <Spinner />;
   }
@@ -81,7 +86,7 @@ export function BoardEdit() {
             onOpenChange={(e) => setDialogOpen(e.open)}
           >
             <DialogTrigger asChild>
-              <Button>저장</Button>
+              <Button disabled={disabled}>저장</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
