@@ -3,20 +3,34 @@ import { Field } from "../../components/ui/field.jsx";
 import { useState } from "react";
 import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
+import { useNavigate } from "react-router-dom";
 
 export function MemberSignup() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
   function handleSaveClick() {
     axios
       .post("/api/member/signup", { id, password, description })
       .then((res) => {
-        console.log("잘됨");
+        const message = res.data.message;
+
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate("/");
       })
       .catch((e) => {
-        console.log("안됨");
+        const message = e.response.data.message;
+
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
       })
       .finally(() => {
         console.log("성공이든 실패든 무조건 실행");
