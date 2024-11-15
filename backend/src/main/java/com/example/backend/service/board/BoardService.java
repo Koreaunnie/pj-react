@@ -23,8 +23,8 @@ public class BoardService {
     }
 
     // 게시물 목록
-    public List<Board> list() {
-        return mapper.selectAll();
+    public List<Board> list(Integer page) {
+        return mapper.selectByPage((page - 1) * 10);
     }
 
     // 게시물 상세 보기

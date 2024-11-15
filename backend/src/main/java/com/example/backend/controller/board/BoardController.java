@@ -40,8 +40,9 @@ public class BoardController {
 
     // 게시물 목록
     @GetMapping("list")
-    public List<Board> list() {
-        return service.list();
+    public List<Board> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+
+        return service.list(page);
     }
 
     // 게시물 상세 보기
@@ -55,7 +56,7 @@ public class BoardController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
         if (service.remove(id)) {
             return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "success",
+                    .body(Map.of("message", Map.of("type", "warning",
                             "text", id + "번 게시글이 삭제되었습니다.")));
         } else {
             return ResponseEntity.internalServerError()
