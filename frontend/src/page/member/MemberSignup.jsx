@@ -99,6 +99,7 @@ export function MemberSignup() {
           <Input
             value={passwordCheck}
             onChange={(e) => setPasswordCheck(e.target.value)}
+            invalid
           />
         </Field>
 
