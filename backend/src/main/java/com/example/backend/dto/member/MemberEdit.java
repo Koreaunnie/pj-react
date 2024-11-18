@@ -6,6 +6,7 @@ import lombok.Data;
 public class MemberEdit {
     private String id;
     private String password;
+    private String email;
     private String oldPassword;
     private String description;
 }

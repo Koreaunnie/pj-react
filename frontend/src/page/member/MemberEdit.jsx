@@ -21,6 +21,7 @@ export function MemberEdit() {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false); // 모달 닫히기
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export function MemberEdit() {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
       setPassword(res.data.password);
+      setEmail(res.data.email);
       setDescription(res.data.description);
     });
   }, []);
@@ -38,6 +40,7 @@ export function MemberEdit() {
       .put("/api/member/update", {
         id: member.id,
         password,
+        email,
         description,
         oldPassword,
       })
@@ -81,6 +84,10 @@ export function MemberEdit() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </Field>
+
+        <Field label={"이메일"}>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
         </Field>
 
         <Field label={"자기소개"}>

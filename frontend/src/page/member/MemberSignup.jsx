@@ -12,11 +12,12 @@ export function MemberSignup() {
   const [description, setDescription] = useState("");
   const [idCheck, setIdCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   function handleSaveClick() {
     axios
-      .post("/api/member/signup", { id, password, description })
+      .post("/api/member/signup", { id, password, email, description })
       .then((res) => {
         console.log("성공");
 
@@ -101,6 +102,14 @@ export function MemberSignup() {
           <Input
             value={passwordCheck}
             onChange={(e) => setPasswordCheck(e.target.value)}
+          />
+        </Field>
+
+        <Field label="이메일">
+          <Input
+            placeholder="example@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Field>
 

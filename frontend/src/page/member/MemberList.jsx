@@ -29,6 +29,7 @@ export function MemberList(props) {
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
+            <Table.ColumnHeader>E-mail</Table.ColumnHeader>
             <Table.ColumnHeader>가입일시</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -40,6 +41,7 @@ export function MemberList(props) {
               key={member.id}
             >
               <Table.Cell>{member.id}</Table.Cell>
+              <Table.Cell>{member.email}</Table.Cell>
               <Table.Cell>{member.inserted}</Table.Cell>
             </Table.Row>
           ))}

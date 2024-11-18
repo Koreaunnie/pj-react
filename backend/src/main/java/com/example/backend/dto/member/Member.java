@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Member {
     private String id;
     private String password;
+    private String email;
     private String description;
     private LocalDateTime inserted;
 }
