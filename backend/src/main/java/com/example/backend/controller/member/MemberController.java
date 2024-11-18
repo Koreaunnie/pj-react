@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,6 +51,12 @@ public class MemberController {
                             "text", "사용 가능한 아이디 입니다."),
                     "available", true));
 
+        }
+    }
+
+    @GetMapping("list"){
+        public List<Member> list() {
+            return service.list();
         }
     }
 

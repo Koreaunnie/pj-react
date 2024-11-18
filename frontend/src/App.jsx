@@ -1,11 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { BoardAdd } from "./page/board/BoardAdd.jsx";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { BoardList } from "./page/board/BoardList.jsx";
 import { BoardView } from "./page/board/BoardView.jsx";
 import { BoardEdit } from "./page/board/BoardEdit.jsx";
 import { MemberSignup } from "./page/member/MemberSignup.jsx";
+import * as PropTypes from "prop-types";
+import { MemberList } from "./page/member/MemberList.jsx";
 
+MemberList.propTypes = { children: PropTypes.node };
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "member/:list",
-        element: <div>회원목록</div>,
+        element: <MemberList />,
       },
       {
         path: "member/:id",
