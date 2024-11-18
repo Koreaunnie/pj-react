@@ -9,11 +9,11 @@ import { useNavigate } from "react-router-dom";
 export function MemberSignup() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [description, setDescription] = useState("");
-  const [idCheck, setIdCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
-  const [emailCheck, setEmailCheck] = useState(false);
+  const [description, setDescription] = useState("");
+  const [idCheck, setIdCheck] = useState(false);
+  const [emailCheck, setEmailCheck] = useState(true);
   const navigate = useNavigate();
 
   function handleSaveClick() {
@@ -91,6 +91,9 @@ export function MemberSignup() {
     }
   }
 
+  // 이메일 중복 확인 버튼 활성화 여부
+  let emailCheckButtonDisabled = email.length === 0;
+
   return (
     <Box>
       <h3>회원가입</h3>
@@ -130,9 +133,20 @@ export function MemberSignup() {
             <Input
               placeholder="example@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (e.target.value.length > 0) {
+                  setEmailCheck(false);
+                } else {
+                  setEmailCheck(true);
+                }
+              }}
             />
-            <Button onClick={handleEmailCheckClick} variant={"outline"}>
+            <Button
+              disabled={emailCheckButtonDisabled}
+              onClick={handleEmailCheckClick}
+              variant={"outline"}
+            >
               중복확인
             </Button>
           </Group>
