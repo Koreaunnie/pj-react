@@ -35,5 +35,5 @@ public interface MemberMapper {
             DELETE FROM member
             WHERE id = #{id}
             """)
-    void deleteById(String id);
+    int deleteById(String id);
 }
