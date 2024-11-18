@@ -1,6 +1,9 @@
-import { Box, Field, Input, Spinner, Stack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { Field } from "../../components/ui/field.jsx";
+import { Button } from "../../components/ui/button.jsx";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -11,8 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
-import { Button } from "../../components/ui/button.jsx";
-import { useNavigate, useParams } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 
 export function MemberInfo() {
@@ -23,7 +24,7 @@ export function MemberInfo() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 회원 정보 얻기
+    // 회원정보 얻기
     axios.get(`/api/member/${id}`).then((res) => setMember(res.data));
   }, []);
 
@@ -42,7 +43,7 @@ export function MemberInfo() {
         navigate("/member/signup");
       })
       .catch((e) => {
-        const message = res.response.data.message;
+        const message = e.response.data.message;
 
         toaster.create({
           type: message.type,
@@ -62,58 +63,50 @@ export function MemberInfo() {
   return (
     <Box>
       <h3>회원 정보</h3>
-
       <Stack gap={5}>
         <Field label={"아이디"}>
-          <Input value={member.id} readOnly />
+          <Input readOnly value={member.id} />
         </Field>
-
         <Field label={"암호"}>
-          <Input value={member.password} readOnly />
+          <Input readOnly value={member.password} />
         </Field>
-
         <Field label={"자기소개"}>
-          <Input value={member.description} readOnly />
+          <Textarea readOnly value={member.description} />
         </Field>
-
         <Field label={"가입일시"}>
-          <Input type={"datetime-local"} value={member.inserted} readOnly />
+          <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
-
-        <Button colorPalette={"red"}>회원 탈퇴</Button>
-
-        <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-          <DialogTrigger asChild>
-            <Button colorPalette={"red"}>탈퇴</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>탈퇴 확인</DialogTitle>
-            </DialogHeader>
-
-            <DialogBody>
-              <Stack>
-                <p>탈퇴하시겠습니까?</p>
-                <Field label={"암호"}>
-                  <Input
-                    placeholer={"암호를 입력해주세요."}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Field>
-              </Stack>
-            </DialogBody>
-
-            <DialogFooter>
-              <DialogActionTrigger>
-                <Button>취소</Button>
-              </DialogActionTrigger>
-              <Button colorPalette={"red"} onClick={handleDeleteClick}>
-                탈퇴
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogRoot>
+        <Box>
+          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+            <DialogTrigger asChild>
+              <Button colorPalette={"red"}>탈퇴</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>탈퇴 확인</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                <Stack gap={5}>
+                  <Field label={"암호"}>
+                    <Input
+                      placeholder={"암호를 입력해주세요."}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Field>
+                </Stack>
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger>
+                  <Button variant={"outline"}>취소</Button>
+                </DialogActionTrigger>
+                <Button colorPalette={"red"} onClick={handleDeleteClick}>
+                  탈퇴
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogRoot>
+        </Box>
       </Stack>
     </Box>
   );

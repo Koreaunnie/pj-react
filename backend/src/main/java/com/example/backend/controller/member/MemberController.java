@@ -72,7 +72,7 @@ public class MemberController {
                     "type", "success", "text", "회원 정보를 삭제하였습니다")));
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "success", "text", "회원 정보를 삭제하였습니다")));
+                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
     }
 }
