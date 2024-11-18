@@ -25,11 +25,11 @@ export function MemberList(props) {
     <Box>
       <h3>회원 목록</h3>
 
-      <Table.Root>
+      <Table.Root interactive>
         <Table.Header>
           <Table.Row>
-            <Table.columnHeader>ID</Table.columnHeader>
-            <Table.columnHeader>가입일시</Table.columnHeader>
+            <Table.ColumnHeader>ID</Table.ColumnHeader>
+            <Table.ColumnHeader>가입일시</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
 

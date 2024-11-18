@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { BoardAdd } from "./page/board/BoardAdd.jsx";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { BoardList } from "./page/board/BoardList.jsx";
