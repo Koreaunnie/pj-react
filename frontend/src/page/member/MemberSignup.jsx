@@ -13,6 +13,7 @@ export function MemberSignup() {
   const [idCheck, setIdCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
   const navigate = useNavigate();
 
   function handleSaveClick() {
@@ -62,6 +63,25 @@ export function MemberSignup() {
       });
   };
 
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          email: email,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+
+        setEmailCheck(data.available);
+      });
+  };
+
   // 가입 버튼 비활성화 여부
   let disabled = true;
 
@@ -106,11 +126,16 @@ export function MemberSignup() {
         </Field>
 
         <Field label="이메일">
-          <Input
-            placeholder="example@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <Group>
+            <Input
+              placeholder="example@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button onClick={handleEmailCheckClick} variant={"outline"}>
+              중복확인
+            </Button>
+          </Group>
         </Field>
 
         <Field label="자기소개">

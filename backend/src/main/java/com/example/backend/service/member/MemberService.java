@@ -58,4 +58,10 @@ public class MemberService {
         }
         return cnt == 1;
     }
+
+    public boolean checkEmail(String email) {
+        Member member = mapper.selectByEmail(email);
+
+        return member != null;
+    }
 }
