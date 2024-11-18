@@ -53,7 +53,7 @@ public class MemberService {
         Member db = mapper.selectById(member.getId());
         if (db != null) {
             if (db.getPassword().equals(member.getOldPassword())) {
-                mapper.update(member);
+                cnt = mapper.update(member);
             }
         }
         return cnt == 1;

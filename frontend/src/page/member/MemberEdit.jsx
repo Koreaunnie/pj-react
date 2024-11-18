@@ -67,13 +67,14 @@ export function MemberEdit() {
       });
   }
 
-  if (member == null) {
+  if (member === null) {
     return <Spinner />;
   }
 
   return (
     <Box>
-      <h3>회언 정보 수정</h3>
+      <h3>회원 정보 수정</h3>
+
       <Stack gap={5}>
         <Field label={"아이디"} readOnly>
           <Input defaultValue={member.id} />
@@ -102,21 +103,24 @@ export function MemberEdit() {
             <DialogTrigger asChild>
               <Button>저장</Button>
             </DialogTrigger>
+
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>회원 정보 변경 확인</DialogTitle>
               </DialogHeader>
+
               <DialogBody>
                 <Stack gap={5}>
-                  <Field label={"암호"}>
+                  <Field label={"기존 암호"}>
                     <Input
-                      placeholder={"암호를 입력해주세요."}
+                      placeholder={"기존 암호를 입력해주세요."}
                       value={oldPassword}
                       onChange={(e) => setOldPassword(e.target.value)}
                     />
                   </Field>
                 </Stack>
               </DialogBody>
+
               <DialogFooter>
                 <DialogActionTrigger>
                   <Button variant={"outline"}>취소</Button>
