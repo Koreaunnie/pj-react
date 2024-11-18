@@ -1,4 +1,4 @@
-import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Group, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -23,6 +23,7 @@ export function MemberEdit() {
   const [oldPassword, setOldPassword] = useState("");
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
+  const [emailCheck, setEmailCheck] = useState(true);
   const [open, setOpen] = useState(false); // 모달 닫히기
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ export function MemberEdit() {
       .put("/api/member/update", {
         id: member.id,
         password,
-        email,
+        email: email.length === 0 ? null : email,
         description,
         oldPassword,
       })
@@ -67,6 +68,41 @@ export function MemberEdit() {
       });
   }
 
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          email: email,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+
+        setEmailCheck(data.available);
+      });
+  };
+
+  // 이메일 중복 확인
+  let emailCheckButtonDisabled = true;
+
+  if (email.length === 0 || member.email === email) {
+    // 이메일을 안 쓰거나 기존과 같으면 true
+  } else {
+    // 그렇지 않으면 false
+    emailCheckButtonDisabled = false;
+  }
+
+  // 저장 버튼 활성화 여부
+  let saveButtonDisabled = false;
+  if (!emailCheck) {
+    saveButtonDisabled = true;
+  }
+
   if (member === null) {
     return <Spinner />;
   }
@@ -88,7 +124,27 @@ export function MemberEdit() {
         </Field>
 
         <Field label={"이메일"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Group>
+            <Input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                const emptyEmail = e.target.value.length === 0;
+                const sameEmail = e.target.value === member.email;
+                if (emptyEmail || sameEmail) {
+                  setEmailCheck(true);
+                } else {
+                  setEmailCheck(false);
+                }
+              }}
+            />
+            <Button
+              onClick={handleEmailCheckClick}
+              disabled={emailCheckButtonDisabled}
+            >
+              중복 확인
+            </Button>
+          </Group>
         </Field>
 
         <Field label={"자기소개"}>
@@ -101,7 +157,7 @@ export function MemberEdit() {
         <Box>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
-              <Button>저장</Button>
+              <Button disabled={saveButtonDisabled}>저장</Button>
             </DialogTrigger>
 
             <DialogContent>
