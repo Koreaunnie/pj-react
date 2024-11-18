@@ -77,6 +77,7 @@ export function MemberInfo() {
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
         <Box>
+          <Button onClick={() => navigate(`/member/edit/${id}`)}>수정</Button>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
               <Button colorPalette={"red"}>탈퇴</Button>
@@ -98,7 +99,7 @@ export function MemberInfo() {
               </DialogBody>
               <DialogFooter>
                 <DialogActionTrigger>
-                  <Button variant={"outline"}>취소</Button>
+                  <Button>취소</Button>
                 </DialogActionTrigger>
                 <Button colorPalette={"red"} onClick={handleDeleteClick}>
                   탈퇴
