@@ -13,7 +13,7 @@ export function MemberList(props) {
   }, []);
 
   // 테이블 행 클릭시 회원 정보 보기로 이동
-  function handleRowClick() {
+  function handleRowClick(id) {
     navigate(`/member/${id}`);
   }
 

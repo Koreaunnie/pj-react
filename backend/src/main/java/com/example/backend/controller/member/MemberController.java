@@ -64,4 +64,9 @@ public class MemberController {
         return service.get(id);
     }
 
+    @DeleteMapping("remove")
+    public void remove(@RequestBody Member member) {
+        service.remove(member);
+    }
+
 }

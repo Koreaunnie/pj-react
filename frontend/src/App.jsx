@@ -8,6 +8,7 @@ import { MemberSignup } from "./page/member/MemberSignup.jsx";
 import * as PropTypes from "prop-types";
 import { MemberList } from "./page/member/MemberList.jsx";
 import { MemberInfo } from "./page/member/MemberInfo.jsx";
+import React from "react";
 
 MemberList.propTypes = { children: PropTypes.node };
 
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         element: <BoardEdit />,
       },
       {
-        path: "member/:signup",
+        path: "member/signup",
         element: <MemberSignup />,
       },
       {
@@ -41,11 +42,11 @@ const router = createBrowserRouter([
         element: <MemberList />,
       },
       {
-        path: "member/id",
+        path: "member/:id",
         element: <MemberInfo />,
       },
       {
-        path: "member/edit",
+        path: "member/edit/:id",
         element: <div>회원정보 수정</div>,
       },
     ],
