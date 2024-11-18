@@ -68,17 +68,26 @@ public class MemberController {
     @DeleteMapping("remove")
     public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
         if (service.remove(member)) {
-            // 잘됨
+            // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
                     "type", "success", "text", "회원 정보를 삭제하였습니다")));
         } else {
+            // 실패
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
                     "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
     }
 
     @PutMapping("update")
-    public void update(@RequestBody MemberEdit member) {
-        service.update(member);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
+        if (service.update(member)) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "회원 정보를 수정하였습니다")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+        }
     }
 }
