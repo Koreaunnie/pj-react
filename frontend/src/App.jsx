@@ -37,15 +37,15 @@ const router = createBrowserRouter([
         element: <MemberSignup />,
       },
       {
-        path: "member/:list",
+        path: "member/list",
         element: <MemberList />,
       },
       {
-        path: "member/:id",
+        path: "member/id",
         element: <MemberInfo />,
       },
       {
-        path: "member/:edit",
+        path: "member/edit",
         element: <div>회원정보 수정</div>,
       },
     ],
