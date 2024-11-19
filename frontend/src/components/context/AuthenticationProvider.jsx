@@ -26,10 +26,15 @@ function AuthenticationProvider({ children }) {
   }
 
   const isAuthenticated = Date.now() < userToken.exp * 1000;
+  let isAdmin = false;
+
+  if (userToken.scope) {
+    isAdmin = userToken.scope.split(" ").includes("admin");
+  }
 
   return (
     <AuthenticationContext.Provider
-      value={{ id: userToken.sub, login, logout, isAuthenticated }}
+      value={{ id: userToken.sub, login, logout, isAuthenticated, isAdmin }}
     >
       {children}
     </AuthenticationContext.Provider>

@@ -65,7 +65,6 @@ export function BoardList() {
   }
 
   function handlePageChange(e) {
-    console.log(e.page);
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
