@@ -4,6 +4,7 @@ import com.example.backend.dto.board.Board;
 import com.example.backend.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -17,10 +18,11 @@ public class BoardController {
 
     // 게시물 작성
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Board board) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Board board,
+                                                   Authentication authentication) {
 
         if (service.validate(board)) {
-            if (service.add(board)) {
+            if (service.add(board, authentication)) {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success",
                                         "text", board.getId() + "번 게시물이 등록되었습니다."),

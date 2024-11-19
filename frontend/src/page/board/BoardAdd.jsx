@@ -9,7 +9,6 @@ import { toaster } from "../../components/ui/toaster.jsx";
 export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [writer, setWriter] = useState("");
   const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
@@ -18,11 +17,18 @@ export function BoardAdd() {
     setProgress(true);
 
     axios
-      .post("/api/board/add", {
-        title, // title: title 에서 축약됨
-        content,
-        writer,
-      })
+      .post(
+        "/api/board/add",
+        {
+          title, // title: title 에서 축약됨
+          content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      )
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;
@@ -56,15 +62,14 @@ export function BoardAdd() {
         <Field label={"제목"}>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
+
         <Field label={"본문"}>
           <Textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
-        <Field label={"작성자"}>
-          <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
-        </Field>
+
         <Box>
           <Button
             disabled={disabled}
