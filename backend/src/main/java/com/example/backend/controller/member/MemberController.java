@@ -111,13 +111,20 @@ public class MemberController {
 
     // 로그인
     @PostMapping("login")
-    public void login(@RequestBody Member member) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
         String token = service.token(member);
 
         if (token != null) {
-
+            // 로그인 성공
+            return ResponseEntity.ok().body(Map.of("token", token,
+                    "message", Map.of(
+                            "type", "success",
+                            "text", "로그인 되었습니다.")));
         } else {
-            
+            // 로그인 실패
+            return ResponseEntity.status(401).body(Map.of(
+                    "message", Map.of("type", "warning",
+                            "text", "아이디나 비밀번호를 확인해주세요.")));
         }
     }
 }

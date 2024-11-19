@@ -4,9 +4,13 @@ import com.example.backend.dto.member.Member;
 import com.example.backend.dto.member.MemberEdit;
 import com.example.backend.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -15,6 +19,7 @@ import java.util.List;
 public class MemberService {
 
     final MemberMapper mapper;
+    final JwtEncoder jwtEncoder;
 
     public boolean add(Member member) {
         int cnt = mapper.insert(member);
@@ -73,6 +78,15 @@ public class MemberService {
             // 비밀번호 일치하는지 확인
             if (db.getPassword().equals(member.getPassword())) {
                 // token 만들어서 리턴
+                JwtClaimsSet claims = JwtClaimsSet.builder()
+                        .issuer("self")
+                        .subject(member.getId())
+                        .issuedAt(Instant.now()) // 언제부터
+                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7)) // 언제까지
+//                        .claim("scope", "") // 권한
+                        .build();
+
+                return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
             }
         }
         return null;
