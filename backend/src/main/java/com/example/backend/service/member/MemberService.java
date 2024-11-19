@@ -90,7 +90,7 @@ public class MemberService {
                         .subject(member.getId())
                         .issuedAt(Instant.now()) // 언제부터
                         .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7)) // 언제까지
-//                        .claim("scope", "") // 권한
+                        .claim("scope", authsString) // 권한
                         .build();
 
                 return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -101,5 +101,12 @@ public class MemberService {
 
     public boolean hasAccess(String id, Authentication authentication) {
         return id.equals(authentication.getName());
+    }
+
+    public boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities()
+                .stream()
+                .map(a -> a.toString())
+                .anyMatch(a -> a.equals("SCOPE_admin"));
     }
 }
