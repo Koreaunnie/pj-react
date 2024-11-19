@@ -6,6 +6,8 @@ import com.example.backend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,8 +81,14 @@ public class MemberController {
     }
 
     @GetMapping("{id}")
-    public Member getMember(@PathVariable String id) {
-        return service.get(id);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Member> getMember(@PathVariable String id,
+                                            Authentication authentication) {
+        if (service.hasAccess(id, authentication)) {
+            return ResponseEntity.ok().body(service.get(id));
+        } else {
+            return ResponseEntity.status(403).build();
+        }
     }
 
     @DeleteMapping("remove")
