@@ -10,6 +10,7 @@ import { MemberList } from "./page/member/MemberList.jsx";
 import { MemberInfo } from "./page/member/MemberInfo.jsx";
 import React from "react";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
+import { MemberLogin } from "./page/member/MemberLogin.jsx";
 
 MemberList.propTypes = { children: PropTypes.node };
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "member/edit/:id",
         element: <MemberEdit />,
+      },
+      {
+        path: "member/login",
+        element: <MemberLogin />,
       },
     ],
   },

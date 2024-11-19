@@ -10,6 +10,7 @@ export function Navbar() {
       <Box onClick={() => navigate("/add")}>작성</Box>
       <Box onClick={() => navigate("/member/signup")}>회원가입</Box>
       <Box onClick={() => navigate("/member/list")}>회원목록</Box>
+      <Box onClick={() => navigate("/member/login")}>로그인</Box>
     </Flex>
   );
 }

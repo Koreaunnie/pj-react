@@ -108,4 +108,16 @@ public class MemberController {
                     "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
     }
+
+    // 로그인
+    @PostMapping("login")
+    public void login(@RequestBody Member member) {
+        String token = service.token(member);
+
+        if (token != null) {
+
+        } else {
+            
+        }
+    }
 }

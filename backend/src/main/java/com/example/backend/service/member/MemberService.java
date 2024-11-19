@@ -64,4 +64,17 @@ public class MemberService {
 
         return member != null;
     }
+
+    // 로그인
+    public String token(Member member) {
+        // 아이디가 존재하는지 확인
+        Member db = mapper.selectById(member.getId());
+        if (db != null) {
+            // 비밀번호 일치하는지 확인
+            if (db.getPassword().equals(member.getPassword())) {
+                // token 만들어서 리턴
+            }
+        }
+        return null;
+    }
 }
