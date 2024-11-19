@@ -84,21 +84,32 @@ public class BoardController {
 
     // 게시물 수정
     @PutMapping("update")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board) {
-        if (service.validate(board)) {
-            if (service.update(board)) {
-                return ResponseEntity.ok()
-                        .body(Map.of("message", Map.of("type", "success",
-                                "text", board.getId() + "번 게시글이 수정되었습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> update(
+            @RequestBody Board board,
+            Authentication authentication) {
+        if (service.hasAccess(board.getId(), authentication)) {
+
+
+            if (service.validate(board)) {
+                if (service.update(board)) {
+                    return ResponseEntity.ok()
+                            .body(Map.of("message", Map.of("type", "success",
+                                    "text", board.getId() + "번 게시글이 수정되었습니다.")));
+                } else {
+                    return ResponseEntity.internalServerError()
+                            .body(Map.of("message", Map.of("type", "error",
+                                    "text", "게시글이 수정 중 문제가 발생하였습니다.")));
+                }
             } else {
-                return ResponseEntity.internalServerError()
-                        .body(Map.of("message", Map.of("type", "error",
-                                "text", "게시글이 수정 중 문제가 발생하였습니다.")));
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "warning",
+                                "text", "제목과 본문은 비어있을 수 없습니다.")));
             }
         } else {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "warning",
-                            "text", "제목과 본문은 비어있을 수 없습니다.")));
+            return ResponseEntity.status(403).body(Map.of("message", Map.of(
+                    "type", "error",
+                    "text", "수정 권한이 없습니다.")));
         }
     }
 }
