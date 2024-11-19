@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -75,6 +76,11 @@ public class MemberService {
     public String token(Member member) {
         // 아이디가 존재하는지 확인
         Member db = mapper.selectById(member.getId());
+        // admin 권한 확인
+        List<String> auths = mapper.selectAuthByMemberId(member.getId());
+        String authsString = auths.stream()
+                .collect(Collectors.joining(" "));
+
         if (db != null) {
             // 비밀번호 일치하는지 확인
             if (db.getPassword().equals(member.getPassword())) {
