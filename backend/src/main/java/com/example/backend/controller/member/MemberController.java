@@ -112,15 +112,24 @@ public class MemberController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
-        if (service.update(member)) {
-            // 성공
-            return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "회원 정보를 수정하였습니다")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> update(
+            @RequestBody MemberEdit member,
+            Authentication authentication) {
+        if (service.hasAccess(member.getId(), authentication)) {
+
+
+            if (service.update(member)) {
+                // 성공
+                return ResponseEntity.ok(Map.of("message", Map.of(
+                        "type", "success", "text", "회원 정보를 수정하였습니다")));
+            } else {
+                // 실패
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                        "type", "warning", "text", "정확한 정보를 입력해주세요")));
+            }
         } else {
-            // 실패
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+            return ResponseEntity.status(403).build();
         }
     }
 
