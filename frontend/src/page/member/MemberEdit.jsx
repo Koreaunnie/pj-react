@@ -31,8 +31,10 @@ export function MemberEdit() {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
       setPassword(res.data.password);
-      setEmail(res.data.email);
       setDescription(res.data.description);
+      if (res.data.email) {
+        setEmail(res.data.email);
+      }
     });
   }, []);
 
