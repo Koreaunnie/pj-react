@@ -4,6 +4,7 @@ import com.example.backend.dto.board.Board;
 import com.example.backend.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class BoardController {
 
     // 게시물 작성
     @PostMapping("add")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Board board,
                                                    Authentication authentication) {
 
