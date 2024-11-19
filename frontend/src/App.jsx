@@ -12,6 +12,7 @@ import React from "react";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { MemberLogin } from "./page/member/MemberLogin.jsx";
 import axios from "axios";
+import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 
 MemberList.propTypes = { children: PropTypes.node };
 
@@ -72,7 +73,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthenticationProvider>
+      <RouterProvider router={router} />
+    </AuthenticationProvider>
+  );
 }
 
 export default App;
