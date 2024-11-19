@@ -17,18 +17,10 @@ export function BoardAdd() {
     setProgress(true);
 
     axios
-      .post(
-        "/api/board/add",
-        {
-          title, // title: title 에서 축약됨
-          content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      )
+      .post("/api/board/add", {
+        title, // title: title 에서 축약됨
+        content,
+      })
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;

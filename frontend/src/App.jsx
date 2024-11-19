@@ -11,9 +11,21 @@ import { MemberInfo } from "./page/member/MemberInfo.jsx";
 import React from "react";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { MemberLogin } from "./page/member/MemberLogin.jsx";
+import axios from "axios";
 
 MemberList.propTypes = { children: PropTypes.node };
 
+// axios 인터셉터 설정
+axios.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// react router 설정
 const router = createBrowserRouter([
   {
     path: "/",
