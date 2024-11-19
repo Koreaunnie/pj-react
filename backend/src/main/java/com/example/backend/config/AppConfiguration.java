@@ -32,7 +32,7 @@ public class AppConfiguration {
     RSAPrivateKey priv;
 
     @Bean
-    SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
         return http.build();
     }
