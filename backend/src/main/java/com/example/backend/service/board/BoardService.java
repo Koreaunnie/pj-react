@@ -64,4 +64,11 @@ public class BoardService {
         int cnt = mapper.update(board);
         return cnt == 1;
     }
+
+    // 게시물 삭제할 권한이 있는지 확인 (게시물 작성자와 로그인한 사용자 확인)
+    public boolean hasAccess(int id, Authentication authentication) {
+        Board board = mapper.selectById(id);
+
+        return board.getWriter().equals(authentication.getName());
+    }
 }
