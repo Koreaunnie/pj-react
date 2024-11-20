@@ -21,13 +21,12 @@ export function MemberSignup() {
       .post("/api/member/signup", {
         id,
         password,
-        email: email.length === 0 ? null : email,
+        email,
         description,
       })
       .then((res) => {
-        console.log("성공");
-
         const message = res.data.message;
+
         toaster.create({
           type: message.type,
           description: message.text,
@@ -36,9 +35,8 @@ export function MemberSignup() {
         navigate("/");
       })
       .catch((e) => {
-        console.log("실패");
-
         const message = e.response.data.message;
+
         toaster.create({
           type: message.type,
           description: message.text,
@@ -72,7 +70,7 @@ export function MemberSignup() {
     axios
       .get("/api/member/check", {
         params: {
-          email: email,
+          email,
         },
       })
       .then((res) => res.data)
@@ -87,17 +85,19 @@ export function MemberSignup() {
       });
   };
 
+  // 이메일 중복 확인 버튼 활성화 여부
+  let emailCheckButtonDisabled = email.length === 0;
+
   // 가입 버튼 비활성화 여부
   let disabled = true;
 
   if (idCheck) {
-    if (password === passwordCheck) {
-      disabled = false;
+    if (emailCheck) {
+      if (password === passwordCheck) {
+        disabled = false;
+      }
     }
   }
-
-  // 이메일 중복 확인 버튼 활성화 여부
-  let emailCheckButtonDisabled = email.length === 0;
 
   return (
     <Box>
