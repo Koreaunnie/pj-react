@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +21,29 @@ public class BoardService {
     final BoardMapper mapper;
 
     // 게시물 작성
-    public boolean add(Board board, Authentication authentication) {
+    public boolean add(Board board, MultipartFile[] files, Authentication authentication) {
         board.setWriter(authentication.getName());
         int cnt = mapper.insert(board);
 
+        if (files != null && files.length > 0) {
+            // 폴더 만들기
+            String directory = String.format("c:/Temp/pj1114/%s", board.getId());
+            File dir = new File(directory);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // 파일 업로드
+            // TODO : local -> aws
+            for (MultipartFile file : files) {
+                String filePath = String.format("c:/Temp/pj1114/%s/%s", board.getId(), file.getOriginalFilename());
+                try {
+                    file.transferTo(new File(filePath));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         return cnt == 1;
     }
 

@@ -9,6 +9,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
@@ -17,9 +18,10 @@ export function BoardAdd() {
     setProgress(true);
 
     axios
-      .post("/api/board/add", {
+      .postForm("/api/board/add", {
         title, // title: title 에서 축약됨
         content,
+        files,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -47,6 +49,16 @@ export function BoardAdd() {
   // 제목이나 본문이 비어있는지 확인
   const disabled = !(title.trim().length > 0 && content.trim().length > 0);
 
+  // files 의 파일명을 component list 로 만들기
+  const filesList = [];
+  for (const file of files) {
+    filesList.push(
+      <li>
+        {file.name} ({Math.floor(file.size / 1024)} kb)
+      </li>,
+    );
+  }
+
   return (
     <Box>
       <h3>게시물 작성</h3>
@@ -61,6 +73,16 @@ export function BoardAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
+
+        <Box>
+          <Input
+            onChange={(e) => setFiles(e.target.files)}
+            type={"file"}
+            accept={"image/*"}
+            multiple
+          />
+          <Box>{filesList}</Box>
+        </Box>
 
         <Box>
           <Button
