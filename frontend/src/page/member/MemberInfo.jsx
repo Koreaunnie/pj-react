@@ -1,6 +1,6 @@
 import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 export function MemberInfo() {
   const [member, setMember] = useState(null);
@@ -22,6 +23,7 @@ export function MemberInfo() {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     // 회원정보 얻기
@@ -79,38 +81,41 @@ export function MemberInfo() {
         <Field label={"가입일시"}>
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
-        <Box>
-          <Button onClick={() => navigate(`/member/edit/${id}`)}>수정</Button>
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger asChild>
-              <Button colorPalette={"red"}>탈퇴</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>탈퇴 확인</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <Stack gap={5}>
-                  <Field label={"암호"}>
-                    <Input
-                      placeholder={"암호를 입력해주세요."}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Field>
-                </Stack>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button colorPalette={"red"} onClick={handleDeleteClick}>
-                  탈퇴
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+
+        {hasAccess(id) && (
+          <Box>
+            <Button onClick={() => navigate(`/member/edit/${id}`)}>수정</Button>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger asChild>
+                <Button colorPalette={"red"}>탈퇴</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>탈퇴 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <Stack gap={5}>
+                    <Field label={"암호"}>
+                      <Input
+                        placeholder={"암호를 입력해주세요."}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </Field>
+                  </Stack>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button colorPalette={"red"} onClick={handleDeleteClick}>
+                    탈퇴
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
       </Stack>
     </Box>
   );

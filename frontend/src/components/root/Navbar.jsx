@@ -7,32 +7,30 @@ export function Navbar() {
   const navigate = useNavigate();
 
   // step 2 : context 사용하기
-  const authentication = useContext(AuthenticationContext);
+  const { id, isAdmin, isAuthenticated, logout } = useContext(
+    AuthenticationContext,
+  );
 
   return (
     <Flex gap={3}>
       <Box onClick={() => navigate("/")}>HOME</Box>
 
-      {authentication.isAuthenticated && (
-        <Box onClick={() => navigate("/add")}>작성</Box>
-      )}
+      {isAuthenticated && <Box onClick={() => navigate("/add")}>작성</Box>}
 
-      {authentication.isAuthenticated || (
+      {isAuthenticated || (
         <Box onClick={() => navigate("/member/signup")}>회원가입</Box>
       )}
 
-      {authentication.isAdmin && (
-        <Box onClick={() => navigate("/member/list")}>회원목록</Box>
-      )}
+      {isAdmin && <Box onClick={() => navigate("/member/list")}>회원목록</Box>}
 
-      {authentication.isAuthenticated || (
+      {isAuthenticated || (
         <Box onClick={() => navigate("/member/login")}>로그인</Box>
       )}
 
-      {authentication.isAuthenticated && (
+      {isAuthenticated && (
         <Box
           onClick={() => {
-            authentication.logout();
+            logout();
             navigate("/member/login");
           }}
         >
@@ -40,7 +38,7 @@ export function Navbar() {
         </Box>
       )}
 
-      <Box>{authentication.id}님이 로그인 하였습니다.</Box>
+      <Box onClick={() => navigate(`/member/${id}`)}>{id}</Box>
     </Flex>
   );
 }
