@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import {AuthenticationContext} from "../../components/context/AuthenticationProvider.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 export function BoardEdit() {
   const [board, setBoard] = useState(null);
@@ -68,7 +68,7 @@ export function BoardEdit() {
   );
 
   return (
-    (<Box>
+    <Box>
       <h3>{id}번 게시물 수정</h3>
 
       <Stack gap={5}>
@@ -85,37 +85,37 @@ export function BoardEdit() {
           />
         </Field>
 
-        { hasAccess(board.writer) && (
-        <Box>
-          <DialogRoot
-            open={dialogOpen}
-            onOpenChange={(e) => setDialogOpen(e.open)}
-          >
-            <DialogTrigger asChild>
-              <Button disabled={disabled}>저장</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>수정 확인</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <p>{board.id}번 게시물을 수정하시겠습니까?</p>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button
-                  loading={progress}
-                  colorPalette={"blue"}
-                  onClick={handleSaveClick}
-                >
-                  저장
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+        {hasAccess(board.writer) && (
+          <Box>
+            <DialogRoot
+              open={dialogOpen}
+              onOpenChange={(e) => setDialogOpen(e.open)}
+            >
+              <DialogTrigger asChild>
+                <Button disabled={disabled}>저장</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>수정 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{board.id}번 게시물을 수정하시겠습니까?</p>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button
+                    loading={progress}
+                    colorPalette={"blue"}
+                    onClick={handleSaveClick}
+                  >
+                    저장
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
         )}
       </Stack>
     </Box>
