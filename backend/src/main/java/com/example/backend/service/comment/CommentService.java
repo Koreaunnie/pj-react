@@ -33,7 +33,14 @@ public class CommentService {
         return comment.getMemberId().equals(auth.getName());
     }
 
+    // 댓글 삭제
     public void remove(Integer id) {
         mapper.deleteById(id);
+    }
+
+    // 댓글 수정
+    public boolean update(Comment comment) {
+        int cnt = mapper.update(comment);
+        return cnt == 1;
     }
 }
