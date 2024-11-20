@@ -16,11 +16,13 @@ public class CommentService {
 
     final CommentMapper mapper;
 
+    // 댓글 작성
     public void add(Comment comment, Authentication auth) {
         comment.setMemberId(auth.getName());
         mapper.insert(comment);
     }
 
+    // 댓글 목록 조회
     public List<Comment> list(Integer boardId) {
         return mapper.selectByBoardId(boardId);
     }

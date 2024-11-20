@@ -16,15 +16,13 @@ public class CommentController {
 
     final CommentService service;
 
-    // 댓글 쓰기
+    // 댓글 작성
     @GetMapping("list/{boardId}")
     public List<Comment> list(@PathVariable Integer boardId) {
-        System.out.println(boardId);
-        
         return service.list(boardId);
     }
 
-    // 댓글 목록 보기
+    // 댓글 목록 조회
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
     public void add(@RequestBody Comment comment, Authentication auth) {
