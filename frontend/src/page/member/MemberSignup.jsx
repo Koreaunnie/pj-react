@@ -140,6 +140,8 @@ export function MemberSignup() {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
+                // 이메일은 필수 입력이 아니어서
+                // 입력하지 않을 경우 중복체크 하지 않아도 됨
                 if (e.target.value.length > 0) {
                   setEmailCheck(false);
                 } else {
