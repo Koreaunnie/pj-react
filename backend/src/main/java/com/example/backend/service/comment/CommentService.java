@@ -26,4 +26,14 @@ public class CommentService {
     public List<Comment> list(Integer boardId) {
         return mapper.selectByBoardId(boardId);
     }
+
+    // 권한 확인 (로그인 여부)
+    public boolean hasAccess(Integer id, Authentication auth) {
+        Comment comment = mapper.selectById(id);
+        return comment.getMemberId().equals(auth.getName());
+    }
+
+    public void remove(Integer id) {
+        mapper.deleteById(id);
+    }
 }
