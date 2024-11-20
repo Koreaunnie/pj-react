@@ -46,16 +46,20 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment) {
-        if (service.update(comment)) {
-            return ResponseEntity.ok().body(Map.of("message", Map.of(
-                    "type", "success",
-                    "text", "댓글이 수정되었습니다.")));
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment,
+                                                    Authentication auth) {
+        if (service.hasAccess(comment.getId(), auth)) {
+            if (service.update(comment)) {
+                return ResponseEntity.ok().body(Map.of("message", Map.of(
+                        "type", "success",
+                        "text", "댓글이 수정되었습니다.")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of(
+                        "type", "error",
+                        "text", "댓글이 수정되지 않았습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of("message", Map.of(
-                    "type", "error",
-                    "text", "댓글이 수정되지 않았습니다.")));
+            return ResponseEntity.status(403).build();
         }
-
     }
 }
