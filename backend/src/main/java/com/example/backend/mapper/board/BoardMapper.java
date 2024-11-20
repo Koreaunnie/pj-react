@@ -18,8 +18,8 @@ public interface BoardMapper {
 
     @Select("""
             <script>
-                SELECT id, title, writer, inserted
-                FROM board
+                SELECT b.id, b.title, b.writer, b.inserted, COUNT(c.id) AS countComment
+                FROM board b LEFT JOIN comment c ON b.id = c.board_id
                 WHERE
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">
@@ -29,6 +29,7 @@ public interface BoardMapper {
                             OR content LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
+                GROUP BY b.id
                 ORDER BY id DESC
                 LIMIT #{offset}, 10;
             </script>
