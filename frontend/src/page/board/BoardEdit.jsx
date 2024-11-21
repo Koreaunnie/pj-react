@@ -1,5 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Image,
+  Input,
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -16,11 +24,29 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Switch } from "../../components/ui/switch.jsx";
+
+function ImageView({ files, onRemoveSwitchClick }) {
+  return (
+    <Box>
+      {files.map((file) => (
+        <HStack key={file.name}>
+          <Switch
+            colorPalette={"red"}
+            onCheckedChange={(e) => onRemoveSwitchClick(e.checked, file.name)}
+          />
+          <Image border={"1px solid black"} m={5} src={file.src} />
+        </HStack>
+      ))}
+    </Box>
+  );
+}
 
 export function BoardEdit() {
   const [board, setBoard] = useState(null);
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
+  const [removeFiles, setRemoveFiles] = useState([]);
 
   const { hasAccess } = useContext(AuthenticationContext);
 
@@ -31,11 +57,24 @@ export function BoardEdit() {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
 
+  const handleRemoveSwitchClick = (checked, fileName) => {
+    if (checked) {
+      setRemoveFiles([...removeFiles, fileName]);
+    } else {
+      setRemoveFiles(removeFiles.filter((f) => f !== fileName));
+    }
+  };
+
   const handleSaveClick = () => {
     setProgress(true);
 
     axios
-      .put("/api/board/update", board)
+      .putForm("/api/board/update", {
+        id: board.id,
+        title: board.title,
+        content: board.content,
+        removeFiles,
+      })
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -84,6 +123,11 @@ export function BoardEdit() {
             onChange={(e) => setBoard({ ...board, content: e.target.value })}
           />
         </Field>
+
+        <ImageView
+          files={board.fileList}
+          onRemoveSwitchClick={handleRemoveSwitchClick}
+        />
 
         {hasAccess(board.writer) && (
           <Box>
