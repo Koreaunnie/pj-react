@@ -3,6 +3,7 @@ package com.example.backend.service.board;
 import com.example.backend.dto.board.Board;
 import com.example.backend.dto.board.BoardFile;
 import com.example.backend.mapper.board.BoardMapper;
+import com.example.backend.mapper.comment.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 public class BoardService {
 
     final BoardMapper mapper;
+    final CommentMapper commentMapper;
     final S3Client s3;
 
     @Value("${image.src.prefix}")
@@ -99,6 +102,25 @@ public class BoardService {
 
     // 게시물 삭제
     public boolean remove(int id) {
+        // 첨부파일 지우기
+        // 실제파일(s3) 지우기
+        List<String> fileName = mapper.selectFilesByBoardId(id);
+
+        for (String file : fileName) {
+            String key = String.format("pj1114/%s/%s", id, file);
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+
+            s3.deleteObject(dor);
+        }
+        // db 지우기
+        mapper.deleteFileByBoardId(id);
+
+        // 댓글 지우기
+        commentMapper.deleteByBoardId(id);
+
         int cnt = mapper.deleteById(id);
         return cnt == 1;
     }
