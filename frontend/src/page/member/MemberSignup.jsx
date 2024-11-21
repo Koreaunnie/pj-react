@@ -21,7 +21,7 @@ export function MemberSignup() {
       .post("/api/member/signup", {
         id,
         password,
-        email,
+        email: email.length === 0 ? null : email,
         description,
       })
       .then((res) => {
