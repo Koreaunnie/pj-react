@@ -72,4 +72,10 @@ public interface BoardMapper {
             WHERE id=#{id}
             """)
     int update(Board board);
+
+    @Insert("""
+            INSERT INTO board_file
+            VALUES(#{id}, #{fileName})
+            """)
+    int insertFile(Integer id, String fileName);
 }
