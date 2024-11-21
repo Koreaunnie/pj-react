@@ -10,6 +10,7 @@ import {
 } from "../../components/ui/pagination.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { FaCommentDots } from "react-icons/fa";
+import { FaImages } from "react-icons/fa6";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -115,6 +116,12 @@ export function BoardList() {
                     <Badge variant={"subtle"}>
                       <FaCommentDots />
                       {board.countComment}
+                    </Badge>
+                  )}
+                  {board.countFile > 0 && (
+                    <Badge variant={"subtle"}>
+                      <FaImages />
+                      {board.countFile}
                     </Badge>
                   )}
                 </Table.Cell>
