@@ -68,7 +68,9 @@ public class BoardService {
 
     // 게시물 상세 보기
     public Board get(int id) {
-        return mapper.selectById(id);
+        Board board = mapper.selectById(id);
+        board.setFileSrc(mapper.selectFilesByBoardId(id));
+        return board;
     }
 
     // 게시물 작성 시 제목, 내용 공백 불가

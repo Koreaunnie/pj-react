@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Image, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -17,6 +17,22 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
+
+function ImageFileView({ files }) {
+  return (
+    <Box>
+      {files.map((file) => (
+        <Image
+          key={file}
+          src={file}
+          w={"100%"}
+          border={"1px solid #000"}
+          m={3}
+        />
+      ))}
+    </Box>
+  );
+}
 
 export function BoardView() {
   const { id } = useParams();
@@ -61,6 +77,7 @@ export function BoardView() {
         <Field label="본문" readOnly>
           <Textarea value={board.content} />
         </Field>
+        <ImageFileView files={board.fileSrc} />
         <Field label="작성자" readOnly>
           <Input value={board.writer} />
         </Field>
