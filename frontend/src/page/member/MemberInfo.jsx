@@ -23,7 +23,7 @@ export function MemberInfo() {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, logout } = useContext(AuthenticationContext);
 
   useEffect(() => {
     // 회원정보 얻기
@@ -36,6 +36,8 @@ export function MemberInfo() {
         data: { id, password },
       })
       .then((res) => {
+        logout();
+
         const message = res.data.message;
 
         toaster.create({
