@@ -141,6 +141,8 @@ export function BoardView() {
                 {board.content}
               </Box>
             </Flex>
+
+            <ImageFileView files={board.fileList} />
           </Box>
         </Box>
 
