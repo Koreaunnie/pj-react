@@ -176,4 +176,19 @@ public class BoardService {
 
         return board.getWriter().equals(authentication.getName());
     }
+
+    public Map<String, Object> like(Board board, Authentication authentication) {
+        // 이미 좋아요 눌러진 상태면 삭제
+        int cnt = mapper.deleteLikeByBoardIdAndMemberId(board.getId(), authentication.getName());
+
+        // 아니면 삽입
+        if (cnt == 0) {
+            mapper.insertLike(board.getId(), authentication.getName());
+        }
+
+        int countLike = mapper.countLike(board.getId());
+        Map<String, Object> result = Map.of("like", (cnt == 0), "count", countLike);
+
+        return result;
+    }
 }

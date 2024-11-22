@@ -111,4 +111,12 @@ public class BoardController {
                     "text", "수정 권한이 없습니다.")));
         }
     }
+
+    // 게시물 좋아요
+    @PostMapping("like")
+    @PreAuthorize("isAuthenticated()")
+    public Map<String, Object> like(@RequestBody Board board,
+                                    Authentication authentication) {
+        return service.like(board, authentication);
+    }
 }

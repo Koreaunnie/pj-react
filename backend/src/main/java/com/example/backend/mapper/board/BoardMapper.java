@@ -113,4 +113,24 @@ public interface BoardMapper {
               AND name = #{name}
             """)
     int deleteFileByBoardIdAndName(Integer id, String name);
+
+    @Delete("""
+            DELETE FROM board_like
+            WHERE board_id = #{id}
+              AND member_id = #{name}
+            """)
+    int deleteLikeByBoardIdAndMemberId(Integer id, String name);
+
+    @Insert("""
+            INSERT INTO board_like
+            VALUES (#{id}, #{name})
+            """)
+    int insertLike(Integer id, String name);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM board_like
+            WHERE board_id = #{id}
+            """)
+    int countLike(Integer id);
 }

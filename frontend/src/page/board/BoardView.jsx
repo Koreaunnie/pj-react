@@ -1,5 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Image, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  Input,
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -17,6 +27,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
+import { GoHeart, GoHeartFill } from "react-icons/go";
 
 function ImageFileView({ files }) {
   return (
@@ -37,6 +48,7 @@ function ImageFileView({ files }) {
 export function BoardView() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
+  const [like, setLike] = useState({ like: false, count: 0 });
   const navigate = useNavigate();
   const { hasAccess } = useContext(AuthenticationContext);
 
@@ -67,9 +79,35 @@ export function BoardView() {
       });
   };
 
+  const handleLikeClick = () => {
+    axios
+      .post("/api/board/like", {
+        id: board.id,
+      })
+      .then((res) => res.data)
+      .then((data) => setLike(data))
+      .catch()
+      .finally();
+  };
+
   return (
     <Box>
-      <h3>{id} 번 게시물</h3>
+      <Flex>
+        <Heading me={"auto"}>{id} 번 게시물</Heading>
+        <HStack>
+          <Box onClick={handleLikeClick}>
+            <Heading>
+              {like.like || <GoHeart />}
+              {like.like && <GoHeartFill />}
+            </Heading>
+          </Box>
+
+          <Box>
+            <Heading>{like.count}</Heading>
+          </Box>
+        </HStack>
+      </Flex>
+
       <Stack gap={5}>
         <Field label="제목" readOnly>
           <Input value={board.title} />
