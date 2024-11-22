@@ -47,6 +47,7 @@ export function BoardEdit() {
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false); // 버튼 클릭이 여러번 되는 걸 막기 위해
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
 
   const { hasAccess } = useContext(AuthenticationContext);
 
@@ -74,6 +75,7 @@ export function BoardEdit() {
         title: board.title,
         content: board.content,
         removeFiles,
+        uploadFiles,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -106,6 +108,9 @@ export function BoardEdit() {
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
 
+  // 게시물 수정 시 파일 업로드
+  function setUploadFileList(files) {}
+
   return (
     <Box>
       <h3>{id}번 게시물 수정</h3>
@@ -128,6 +133,24 @@ export function BoardEdit() {
           files={board.fileList}
           onRemoveSwitchClick={handleRemoveSwitchClick}
         />
+
+        <Box>
+          <Box>
+            <input
+              onChange={(e) => setUploadFiles(e.target.files)}
+              type={"file"}
+              multiple
+              accept={"image/*"}
+            />
+          </Box>
+          <Box>
+            {Array.from(uploadFiles).map((file) => (
+              <li>
+                {file.name} ({Math.floor(file.size / 1024)} kb)
+              </li>
+            ))}
+          </Box>
+        </Box>
 
         {hasAccess(board.writer) && (
           <Box>

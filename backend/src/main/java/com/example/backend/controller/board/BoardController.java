@@ -84,12 +84,14 @@ public class BoardController {
     // 게시물 수정
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> update(Board board,
-                                                      @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
-                                                      Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> update(
+            Board board,
+            @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+            @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
+            Authentication authentication) {
         if (service.hasAccess(board.getId(), authentication)) {
             if (service.validate(board)) {
-                if (service.update(board, removeFiles)) {
+                if (service.update(board, removeFiles, uploadFiles)) {
                     return ResponseEntity.ok()
                             .body(Map.of("message", Map.of("type", "success",
                                     "text", board.getId() + "번 게시글이 수정되었습니다.")));

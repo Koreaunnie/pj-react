@@ -126,7 +126,7 @@ public class BoardService {
     }
 
     // 게시물 수정
-    public boolean update(Board board, List<String> removeFiles) {
+    public boolean update(Board board, List<String> removeFiles, MultipartFile[] uploadFiles) {
         // 이미 업로드된 파일 지우기
         if (removeFiles != null) {
             for (String file : removeFiles) {
@@ -141,6 +141,28 @@ public class BoardService {
 
                 // db 파일 지우기
                 mapper.deleteFileByBoardIdAndName(board.getId(), file);
+            }
+        }
+
+        // 파일 업로드
+        if (uploadFiles != null && uploadFiles.length > 0) {
+            for (MultipartFile file : uploadFiles) {
+
+                String objectKey = String.format("pj1114/%s/%s", board.getId(), file.getOriginalFilename());
+                PutObjectRequest por = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(objectKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)
+                        .build();
+
+                try {
+                    s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // board_file 테이블에 파일명 입력
+                mapper.insertFile(board.getId(), file.getOriginalFilename());
             }
         }
 
