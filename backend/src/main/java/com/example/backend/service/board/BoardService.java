@@ -128,18 +128,20 @@ public class BoardService {
     // 게시물 수정
     public boolean update(Board board, List<String> removeFiles) {
         // 이미 업로드된 파일 지우기
-        for (String file : removeFiles) {
-            String key = String.format("pj1114/%s/%s", board.getId(), file);
-            DeleteObjectRequest dor = DeleteObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(key)
-                    .build();
+        if (removeFiles != null) {
+            for (String file : removeFiles) {
+                String key = String.format("pj1114/%s/%s", board.getId(), file);
+                DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(key)
+                        .build();
 
-            // s3 파일 지우기
-            s3.deleteObject(dor);
+                // s3 파일 지우기
+                s3.deleteObject(dor);
 
-            // db 파일 지우기
-            mapper.deleteFileByBoardIdAndName(board.getId(), file);
+                // db 파일 지우기
+                mapper.deleteFileByBoardIdAndName(board.getId(), file);
+            }
         }
 
         int cnt = mapper.update(board);
