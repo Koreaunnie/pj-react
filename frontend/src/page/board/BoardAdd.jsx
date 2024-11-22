@@ -51,12 +51,25 @@ export function BoardAdd() {
 
   // files 의 파일명을 component list 로 만들기
   const filesList = [];
+  let sumOfFileSize = 0;
+  let invalidOneFileSize = false; // 한 파일이라도 1MB를 넘는지 확인
+
   for (const file of files) {
+    sumOfFileSize += file.size;
+    if (file.size > 1024 * 1024) {
+      invalidOneFileSize = true;
+    }
     filesList.push(
-      <li>
+      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
         {file.name} ({Math.floor(file.size / 1024)} kb)
       </li>,
     );
+  }
+
+  let fileInputInvalid = false;
+
+  if (sumOfFileSize > 10 * 1024 * 1024 || invalidOneFileSize) {
+    fileInputInvalid = true;
   }
 
   return (
@@ -75,12 +88,19 @@ export function BoardAdd() {
         </Field>
 
         <Box>
-          <Input
-            onChange={(e) => setFiles(e.target.files)}
-            type={"file"}
-            accept={"image/*"}
-            multiple
-          />
+          <Field
+            label={"파일"}
+            helperText={"1MB 이내의 파일만 업로드 가능합니다. (총 10MB)"}
+            invalid={fileInputInvalid}
+            errorText={"선택된 파일의 용량이 초과되었습니다."}
+          >
+            <Input
+              onChange={(e) => setFiles(e.target.files)}
+              type={"file"}
+              accept={"image/*"}
+              multiple
+            />
+          </Field>
           <Box>{filesList}</Box>
         </Box>
 
