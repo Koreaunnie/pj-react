@@ -33,13 +33,7 @@ function ImageFileView({ files }) {
   return (
     <Box>
       {files.map((file) => (
-        <Image
-          key={file.name}
-          src={file.src}
-          w={"100%"}
-          border={"1px solid #000"}
-          m={3}
-        />
+        <Image key={file.name} src={file.src} border={"1px solid #000"} m={3} />
       ))}
     </Box>
   );
@@ -55,6 +49,14 @@ export function BoardView() {
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`/api/board/like/${id}`)
+      .then((res) => res.data)
+      .then((data) => setLike(data));
+  }, []);
+
   if (board === null) {
     return <Spinner />;
   }

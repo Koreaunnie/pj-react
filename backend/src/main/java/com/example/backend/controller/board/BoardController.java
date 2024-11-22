@@ -119,4 +119,11 @@ public class BoardController {
                                     Authentication authentication) {
         return service.like(board, authentication);
     }
+
+    // 게시물 좋아요한 회원 확인
+    @GetMapping("like/{id}")
+    public Map<String, Object> getLike(@PathVariable int id,
+                                       Authentication authentication) {
+        return service.getLike(id, authentication);
+    }
 }
