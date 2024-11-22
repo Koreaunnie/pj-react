@@ -3,6 +3,24 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 
+function NavbarItem(props) {
+  return (
+    <Box
+      css={{
+        paddingX: "15px",
+        paddingY: "10px",
+      }}
+      _hover={{
+        bgColor: "gray.100",
+        cursor: "pointer",
+      }}
+      {...props}
+    >
+      {props.children}
+    </Box>
+  );
+}
+
 export function Navbar() {
   const navigate = useNavigate();
 
@@ -13,32 +31,42 @@ export function Navbar() {
 
   return (
     <Flex gap={3}>
-      <Box onClick={() => navigate("/")}>HOME</Box>
+      <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
 
-      {isAuthenticated && <Box onClick={() => navigate("/add")}>작성</Box>}
-
-      {isAuthenticated || (
-        <Box onClick={() => navigate("/member/signup")}>회원가입</Box>
+      {isAuthenticated && (
+        <NavbarItem onClick={() => navigate("/add")}>작성</NavbarItem>
       )}
 
-      {isAdmin && <Box onClick={() => navigate("/member/list")}>회원목록</Box>}
+      {isAuthenticated || (
+        <NavbarItem onClick={() => navigate("/member/signup")}>
+          회원가입
+        </NavbarItem>
+      )}
+
+      {isAdmin && (
+        <NavbarItem onClick={() => navigate("/member/list")}>
+          회원목록
+        </NavbarItem>
+      )}
 
       {isAuthenticated || (
-        <Box onClick={() => navigate("/member/login")}>로그인</Box>
+        <NavbarItem onClick={() => navigate("/member/login")}>
+          로그인
+        </NavbarItem>
       )}
 
       {isAuthenticated && (
-        <Box
+        <NavbarItem
           onClick={() => {
             logout();
             navigate("/member/login");
           }}
         >
           로그아웃
-        </Box>
+        </NavbarItem>
       )}
 
-      <Box onClick={() => navigate(`/member/${id}`)}>{id}</Box>
+      <NavbarItem onClick={() => navigate(`/member/${id}`)}>{id}</NavbarItem>
     </Flex>
   );
 }
