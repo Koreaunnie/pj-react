@@ -24,11 +24,14 @@ public interface BoardMapper {
                        b.writer, 
                        b.inserted, 
                        COUNT(DISTINCT c.id) AS countComment, 
-                       COUNT(DISTINCT f.name) AS countFile
+                       COUNT(DISTINCT f.name) AS countFile,
+                       COUNT(DISTINCT l.member_id) countLike
                 FROM board b LEFT JOIN comment c 
                                 ON b.id = c.board_id
                              LEFT JOIN board_file f 
                                 ON b.id = f.board_id
+                             LEFT JOIN board_like l     
+                                ON b.id = l.board_id
                 WHERE
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">
