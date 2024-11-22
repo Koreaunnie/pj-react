@@ -143,7 +143,7 @@ export function BoardEdit() {
         />
 
         <Box>
-          <Box>
+          <Box mb={5}>
             <input
               onChange={(e) => setUploadFiles(e.target.files)}
               type={"file"}
@@ -151,6 +151,7 @@ export function BoardEdit() {
               accept={"image/*"}
             />
           </Box>
+
           <Box>
             {Array.from(uploadFiles).map((file) => (
               <Card.Root size={"sm"} mb={2}>
@@ -182,7 +183,7 @@ export function BoardEdit() {
         </Box>
 
         {hasAccess(board.writer) && (
-          <Box>
+          <Box mx={"auto"}>
             <DialogRoot
               open={dialogOpen}
               onOpenChange={(e) => setDialogOpen(e.open)}
