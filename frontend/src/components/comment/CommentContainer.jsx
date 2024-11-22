@@ -62,7 +62,7 @@ export function CommentContainer({ boardId }) {
 
   return (
     <Box>
-      <Stack gap={5}>
+      <Stack gap={5} mt={10}>
         <h3>댓글</h3>
         <CommentInput boardId={boardId} onSaveClick={handleSaveClick} />
         <CommentList

@@ -26,14 +26,18 @@ export function CommentInput({ boardId, onSaveClick }) {
 
   return (
     <Box>
-      <Group>
+      <Group attached h={120} w={"100%"}>
         <Textarea
+          h={120}
           value={comment}
+          resize={"none"}
           disabled={!isAuthenticated}
           placeholder={isAuthenticated ? "" : "로그인 후 댓글을 남겨주세요."}
           onChange={(e) => setComment(e.target.value)}
         />
         <Button
+          h={118}
+          variant={"surface"}
           disabled={!isAuthenticated}
           onClick={() => {
             setComment("");

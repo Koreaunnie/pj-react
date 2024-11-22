@@ -1,11 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
+  Card,
+  FormatNumber,
   HStack,
+  Icon,
   Image,
   Input,
   Spinner,
   Stack,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
@@ -25,6 +29,8 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Switch } from "../../components/ui/switch.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
+import { CiFileOn } from "react-icons/ci";
 
 function ImageView({ files, onRemoveSwitchClick }) {
   return (
@@ -113,7 +119,7 @@ export function BoardEdit() {
 
   return (
     <Box>
-      <h3>{id}번 게시물 수정</h3>
+      <MyHeading>{id}번 게시물 수정</MyHeading>
 
       <Stack gap={5}>
         <Field label={"제목"}>
@@ -122,8 +128,10 @@ export function BoardEdit() {
             onChange={(e) => setBoard({ ...board, title: e.target.value })}
           />
         </Field>
+
         <Field label={"본문"}>
           <Textarea
+            h={250}
             value={board.content}
             onChange={(e) => setBoard({ ...board, content: e.target.value })}
           />
@@ -145,9 +153,30 @@ export function BoardEdit() {
           </Box>
           <Box>
             {Array.from(uploadFiles).map((file) => (
-              <li>
-                {file.name} ({Math.floor(file.size / 1024)} kb)
-              </li>
+              <Card.Root size={"sm"} mb={2}>
+                <Card.Body>
+                  <HStack>
+                    <Text
+                      css={{ color: file.size > 1024 * 1024 ? "red" : "black" }}
+                      me={"auto"}
+                      truncate
+                    >
+                      <Icon mr={2} mt={-1}>
+                        <CiFileOn />
+                      </Icon>
+
+                      {file.name}
+                    </Text>
+                    <Text>
+                      <FormatNumber
+                        value={file.size}
+                        notation={"compact"}
+                        compactDisplay="short"
+                      ></FormatNumber>
+                    </Text>
+                  </HStack>
+                </Card.Body>
+              </Card.Root>
             ))}
           </Box>
         </Box>
@@ -172,6 +201,7 @@ export function BoardEdit() {
                   <DialogActionTrigger>
                     <Button>취소</Button>
                   </DialogActionTrigger>
+
                   <Button
                     loading={progress}
                     colorPalette={"blue"}

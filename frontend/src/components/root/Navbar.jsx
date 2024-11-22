@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Flex } from "@chakra-ui/react";
-import { useContext } from "react";
+import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import React, { useContext } from "react";
 import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
+import { HiOutlinePencilSquare, HiOutlineUserPlus } from "react-icons/hi2";
+import { IoIosLogOut, IoMdHome } from "react-icons/io";
+import { PiUserList } from "react-icons/pi";
+import { CiLogin, CiUser } from "react-icons/ci";
 
 function NavbarItem(props) {
   return (
@@ -11,8 +15,9 @@ function NavbarItem(props) {
         paddingY: "10px",
       }}
       _hover={{
-        bgColor: "gray.100",
+        boxShadow: "inset 0 -2px 0 #18181b",
         cursor: "pointer",
+        fontWeight: "bold",
       }}
       {...props}
     >
@@ -30,30 +35,46 @@ export function Navbar() {
   );
 
   return (
-    <Flex gap={3}>
-      <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
+    <Flex gap={3} mb={4} borderBottomWidth="1px" borderColor="#ececec">
+      <NavbarItem onClick={() => navigate("/")}>
+        <IoMdHome />
+      </NavbarItem>
 
       {isAuthenticated && (
-        <NavbarItem onClick={() => navigate("/add")}>작성</NavbarItem>
+        <NavbarItem onClick={() => navigate("/add")}>
+          <Icon hideFrom={"sm"}>
+            <HiOutlinePencilSquare />
+          </Icon>
+          <Text hideBelow={"sm"}>작성</Text>
+        </NavbarItem>
       )}
 
       <Box mx={"auto"}></Box>
 
       {isAuthenticated || (
         <NavbarItem onClick={() => navigate("/member/signup")}>
-          회원가입
+          <Icon hideFrom={"sm"}>
+            <HiOutlineUserPlus />
+          </Icon>
+          <Text hideBelow={"sm"}>회원가입</Text>
         </NavbarItem>
       )}
 
       {isAdmin && (
         <NavbarItem onClick={() => navigate("/member/list")}>
-          회원목록
+          <Icon hideFrom={"sm"}>
+            <PiUserList />
+          </Icon>
+          <Text hideBelow={"sm"}>회원목록</Text>
         </NavbarItem>
       )}
 
       {isAuthenticated || (
         <NavbarItem onClick={() => navigate("/member/login")}>
-          로그인
+          <Icon hideFrom={"sm"}>
+            <CiLogin />
+          </Icon>
+          <Text hideBelow={"sm"}>로그인</Text>
         </NavbarItem>
       )}
 
@@ -64,11 +85,21 @@ export function Navbar() {
             navigate("/member/login");
           }}
         >
-          로그아웃
+          <Icon hideFrom={"sm"}>
+            <IoIosLogOut />
+          </Icon>
+          <Text hideBelow={"sm"}>로그아웃</Text>
         </NavbarItem>
       )}
 
-      <NavbarItem onClick={() => navigate(`/member/${id}`)}>{id}</NavbarItem>
+      {isAuthenticated && (
+        <NavbarItem onClick={() => navigate(`/member/${id}`)}>
+          <Icon hideFrom={"sm"}>
+            <CiUser />
+          </Icon>
+          <Text hideBelow={"sm"}>{id}</Text>
+        </NavbarItem>
+      )}
     </Flex>
   );
 }

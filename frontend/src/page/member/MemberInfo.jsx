@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberInfo() {
   const [member, setMember] = useState(null);
@@ -66,7 +67,8 @@ export function MemberInfo() {
 
   return (
     <Box>
-      <h3>회원 정보</h3>
+      <MyHeading>회원 정보</MyHeading>
+
       <Stack gap={5}>
         <Field label={"아이디"}>
           <Input readOnly value={member.id} />
@@ -78,18 +80,28 @@ export function MemberInfo() {
           <Input readOnly value={member.email} />
         </Field>
         <Field label={"자기소개"}>
-          <Textarea readOnly value={member.description} />
+          <Textarea
+            readOnly
+            h={120}
+            resize={"none"}
+            value={member.description}
+          />
         </Field>
         <Field label={"가입일시"}>
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
 
         {hasAccess(id) && (
-          <Box>
-            <Button onClick={() => navigate(`/member/edit/${id}`)}>수정</Button>
+          <Box mx={"auto"}>
+            <Button mx={1} onClick={() => navigate(`/member/edit/${id}`)}>
+              수정
+            </Button>
+
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
               <DialogTrigger asChild>
-                <Button colorPalette={"red"}>탈퇴</Button>
+                <Button mx={1} colorPalette={"red"}>
+                  탈퇴
+                </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>

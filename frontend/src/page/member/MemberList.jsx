@@ -2,6 +2,7 @@ import { Box, Spinner, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberList(props) {
   const [memberList, setMemberList] = useState([]);
@@ -23,7 +24,7 @@ export function MemberList(props) {
 
   return (
     <Box>
-      <h3>회원 목록</h3>
+      <MyHeading>회원 목록</MyHeading>
 
       <Table.Root interactive>
         <Table.Header>

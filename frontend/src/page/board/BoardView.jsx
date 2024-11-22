@@ -5,14 +5,11 @@ import {
   Heading,
   HStack,
   Image,
-  Input,
   Spinner,
   Stack,
-  Textarea,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import {
@@ -100,10 +97,13 @@ export function BoardView() {
   };
 
   return (
-    <Box>
+    <Box mx={"auto"} w={{ md: "1000px" }}>
       <Flex>
-        <Heading me={"auto"}>{id} 번 게시물</Heading>
-        <HStack>
+        <Heading mx={"auto"} size={{ base: "xl", md: "3xl" }} mt={5} mb={10}>
+          {board.title}
+        </Heading>
+
+        <HStack mb={10}>
           <Box onClick={handleLikeClick}>
             <ToggleTip
               open={likeTooltipOpen}
@@ -123,25 +123,34 @@ export function BoardView() {
       </Flex>
 
       <Stack gap={5}>
-        <Field label="제목" readOnly>
-          <Input value={board.title} />
-        </Field>
-        <Field label="본문" readOnly>
-          <Textarea value={board.content} />
-        </Field>
-        <ImageFileView files={board.fileList} />
-        <Field label="작성자" readOnly>
-          <Input value={board.writer} />
-        </Field>
-        <Field label="작성일시" readOnly>
-          <Input value={board.inserted} type={"datetime-local"} />
-        </Field>
+        <Box borderTop={"1px solid #e4e4e7"} borderBottom={"1px solid #e4e4e7"}>
+          <Flex as="thead" borderBottom={"1px solid #e4e4e7"}>
+            <Flex as="tr" w="100%" px={5} py={2} backgroundColor={"#f4f4f5"}>
+              <Box as="th" width="50%" textAlign="left">
+                {board.writer}
+              </Box>
+              <Box as="th" width="50%" textAlign="right">
+                {board.inserted}
+              </Box>
+            </Flex>
+          </Flex>
+
+          <Box as="tbody">
+            <Flex as="tr" height="300px" p={5}>
+              <Box as="td" colSpan={2}>
+                {board.content}
+              </Box>
+            </Flex>
+          </Box>
+        </Box>
 
         {hasAccess(board.writer) && (
-          <Box>
+          <Box mx={"auto"}>
             <DialogRoot>
               <DialogTrigger asChild>
-                <Button colorPalette={"red"}>삭제</Button>
+                <Button colorPalette={"red"} mx={1}>
+                  삭제
+                </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -161,12 +170,12 @@ export function BoardView() {
               </DialogContent>
             </DialogRoot>
 
-            <Button onClick={() => navigate(`/edit/${board.id}`)}>수정</Button>
+            <Button mx={1} onClick={() => navigate(`/edit/${board.id}`)}>
+              수정
+            </Button>
           </Box>
         )}
       </Stack>
-
-      <hr />
 
       <CommentContainer boardId={board.id} />
     </Box>

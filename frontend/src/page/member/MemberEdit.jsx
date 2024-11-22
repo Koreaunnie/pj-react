@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberEdit() {
   const { id } = useParams();
@@ -111,7 +112,7 @@ export function MemberEdit() {
 
   return (
     <Box>
-      <h3>회원 정보 수정</h3>
+      <MyHeading>회원 정보 수정</MyHeading>
 
       <Stack gap={5}>
         <Field label={"아이디"} readOnly>
@@ -126,7 +127,7 @@ export function MemberEdit() {
         </Field>
 
         <Field label={"이메일"}>
-          <Group>
+          <Group attached w={"100%"}>
             <Input
               value={email}
               onChange={(e) => {
@@ -141,6 +142,7 @@ export function MemberEdit() {
               }}
             />
             <Button
+              variant={"outline"}
               onClick={handleEmailCheckClick}
               disabled={emailCheckButtonDisabled}
             >
@@ -151,12 +153,13 @@ export function MemberEdit() {
 
         <Field label={"자기소개"}>
           <Textarea
+            h={120}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </Field>
 
-        <Box>
+        <Box mx={"auto"}>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
               <Button disabled={saveButtonDisabled}>저장</Button>

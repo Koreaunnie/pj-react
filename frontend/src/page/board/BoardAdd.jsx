@@ -1,10 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  FormatNumber,
+  HStack,
+  Icon,
+  Input,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
+import { CiFileOn } from "react-icons/ci";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -60,9 +72,30 @@ export function BoardAdd() {
       invalidOneFileSize = true;
     }
     filesList.push(
-      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
-        {file.name} ({Math.floor(file.size / 1024)} kb)
-      </li>,
+      <Card.Root size={"sm"} mb={2}>
+        <Card.Body>
+          <HStack>
+            <Text
+              css={{ color: file.size > 1024 * 1024 ? "red" : "black" }}
+              me={"auto"}
+              truncate
+            >
+              <Icon mr={2} mt={-1}>
+                <CiFileOn />
+              </Icon>
+
+              {file.name}
+            </Text>
+            <Text>
+              <FormatNumber
+                value={file.size}
+                notation={"compact"}
+                compactDisplay="short"
+              ></FormatNumber>
+            </Text>
+          </HStack>
+        </Card.Body>
+      </Card.Root>,
     );
   }
 
@@ -74,7 +107,8 @@ export function BoardAdd() {
 
   return (
     <Box>
-      <h3>게시물 작성</h3>
+      <MyHeading>게시물 작성</MyHeading>
+
       <Stack gap={5}>
         <Field label={"제목"}>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -82,6 +116,7 @@ export function BoardAdd() {
 
         <Field label={"본문"}>
           <Textarea
+            h={250}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
@@ -90,21 +125,21 @@ export function BoardAdd() {
         <Box>
           <Field
             label={"파일"}
-            helperText={"1MB 이내의 파일만 업로드 가능합니다. (총 10MB)"}
+            helperText={"총 10MB, 한 파일은 1MB 이내로 선택하세요."}
             invalid={fileInputInvalid}
             errorText={"선택된 파일의 용량이 초과되었습니다."}
           >
-            <Input
+            <input
               onChange={(e) => setFiles(e.target.files)}
               type={"file"}
               accept={"image/*"}
               multiple
             />
           </Field>
-          <Box>{filesList}</Box>
+          <Box my={7}>{filesList}</Box>
         </Box>
 
-        <Box>
+        <Box mx={"auto"} mb={10}>
           <Button
             disabled={disabled}
             loading={progress}

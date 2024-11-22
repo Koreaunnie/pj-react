@@ -1,4 +1,4 @@
-import { Badge, Box, Heading, HStack, Input, Table } from "@chakra-ui/react";
+import { Badge, Box, Center, HStack, Input, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -9,9 +9,10 @@ import {
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import { FaCommentDots } from "react-icons/fa";
+import { FaCommentDots, FaSearch } from "react-icons/fa";
 import { FaImages } from "react-icons/fa6";
 import { GoHeartFill } from "react-icons/go";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -91,13 +92,13 @@ export function BoardList() {
   }
 
   return (
-    <Box>
-      <Heading size={{ base: "xl", md: "2xl" }}>게시물 목록</Heading>
+    <Box mx={"auto"} w={{ md: "1000px" }}>
+      <MyHeading>게시물 목록</MyHeading>
 
       {boardList.length > 0 ? (
         <Table.Root interactive>
           <Table.Header>
-            <Table.Row>
+            <Table.Row borderTop={"2px solid #18181b"}>
               <Table.ColumnHeader>번호</Table.ColumnHeader>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
               <Table.ColumnHeader hideBelow={"md"}>
@@ -111,6 +112,7 @@ export function BoardList() {
           <Table.Body>
             {boardList.map((board) => (
               <Table.Row
+                _hover={{ cursor: "pointer" }}
                 key={board.id}
                 onClick={() => handleRowClick(board.id)}
               >
@@ -143,7 +145,7 @@ export function BoardList() {
         <p>검색 결과가 없습니다.</p>
       )}
 
-      <HStack>
+      <HStack my={7}>
         <Box>
           <select
             value={search.type}
@@ -160,22 +162,26 @@ export function BoardList() {
             setSearch({ ...search, keyword: e.target.value.trim() })
           }
         />
-        <Button onClick={handleSearchClick}>검색</Button>
+        <Button onClick={handleSearchClick}>
+          <FaSearch />
+        </Button>
       </HStack>
 
-      <PaginationRoot
-        onPageChange={handlePageChange}
-        count={count}
-        pageSize={10}
-        page={page}
-        variant="solid"
-      >
-        <HStack>
-          <PaginationPrevTrigger />
-          <PaginationItems />
-          <PaginationNextTrigger />
-        </HStack>
-      </PaginationRoot>
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={count}
+          pageSize={10}
+          page={page}
+          variant="solid"
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }

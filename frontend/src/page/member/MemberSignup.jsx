@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberSignup() {
   const [id, setId] = useState("");
@@ -100,9 +101,10 @@ export function MemberSignup() {
   }
 
   return (
-    <Box>
-      <h3>회원가입</h3>
-      <Stack gap={5}>
+    <Box mx={"auto"} w={{ md: "400px" }}>
+      <MyHeading>회원가입</MyHeading>
+
+      <Stack>
         <Field label="아이디" helperText="아이디 중복확인을 해주세요." required>
           <Group attached>
             <Input
