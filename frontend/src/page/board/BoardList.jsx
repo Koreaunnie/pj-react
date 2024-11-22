@@ -1,4 +1,4 @@
-import { Badge, Box, HStack, Input, Table } from "@chakra-ui/react";
+import { Badge, Box, Heading, HStack, Input, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -92,18 +92,19 @@ export function BoardList() {
 
   return (
     <Box>
-      <h3>게시물 목록</h3>
+      <Heading size={{ base: "xl", md: "2xl" }}>게시물 목록</Heading>
+
       {boardList.length > 0 ? (
         <Table.Root interactive>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>번호</Table.ColumnHeader>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
-              <Table.ColumnHeader>
+              <Table.ColumnHeader hideBelow={"md"}>
                 <GoHeartFill />
               </Table.ColumnHeader>
               <Table.ColumnHeader>작성자</Table.ColumnHeader>
-              <Table.ColumnHeader>작성일</Table.ColumnHeader>
+              <Table.ColumnHeader hideBelow={"md"}>작성일</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
 
@@ -129,11 +130,11 @@ export function BoardList() {
                     </Badge>
                   )}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell hideBelow={"md"}>
                   {board.countLike > 0 ? board.countLike : ""}
                 </Table.Cell>
                 <Table.Cell>{board.writer}</Table.Cell>
-                <Table.Cell>{board.inserted}</Table.Cell>
+                <Table.Cell hideBelow={"md"}>{board.inserted}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

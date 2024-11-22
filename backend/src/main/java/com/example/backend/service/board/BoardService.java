@@ -103,7 +103,7 @@ public class BoardService {
     // 게시물 삭제
     public boolean remove(int id) {
         // 첨부파일 지우기
-        // 실제파일(s3) 지우기
+        // 1. 실제파일(s3) 지우기
         List<String> fileName = mapper.selectFilesByBoardId(id);
 
         for (String file : fileName) {
@@ -115,11 +115,14 @@ public class BoardService {
 
             s3.deleteObject(dor);
         }
-        // db 지우기
+        // 2. db 지우기
         mapper.deleteFileByBoardId(id);
 
         // 댓글 지우기
         commentMapper.deleteByBoardId(id);
+
+        // 좋아요 지우기
+        mapper.deleteLikeByBoardId(id);
 
         int cnt = mapper.deleteById(id);
         return cnt == 1;
